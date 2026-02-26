@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Abinaya · front-end · jdbc · hackathon 2025</title>
+    <!-- clean, professional sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome 6 (standard icons) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      /* ---------- DARK BLUE THEME ---------- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #0a192f;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        color: #e6f1ff;
+        line-height: 1.5;
+        scroll-behavior: smooth;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: #ccd6f6;
+      }
+
+      .section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 5rem 2rem;
+      }
+
+      /* ----- glassy navigation (dark) ----- */
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 2rem;
+        background: rgba(10, 25, 47, 0.85);
+        backdrop-filter: blur(12px) saturate(180%);
+        -webkit-backdrop-filter: blur(12px) saturate(180%);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid #1e3a5f;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        font-family: "Poppins", sans-serif;
+        color: #64ffda;
+        letter-spacing: -0.02em;
+      }
+
+      nav ul {
+        display: flex;
+        gap: 2.5rem;
+        list-style: none;
+      }
+
+      nav a {
+        text-decoration: none;
+        font-weight: 500;
+        color: #a8b2d1;
+        font-size: 1.1rem;
+        transition: 0.2s ease;
+        padding: 0.4rem 0;
+        border-bottom: 2px solid transparent;
+      }
+
+      nav a:hover {
+        color: #64ffda;
+        border-bottom-color: #64ffda;
+      }
+
+      /* ----- HOME with photo on the right (medium sized 200px) ----- */
+      #home {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: radial-gradient(
+          circle at 80% 30%,
+          #1e3a5f,
+          transparent 50%
+        );
+        padding: 2rem 2rem;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .home-content {
+        flex: 1 1 400px;
+        text-align: left;
+      }
+
+      .home-content h1 {
+        font-size: clamp(2.8rem, 8vw, 4.5rem);
+        color: #ccd6f6;
+        margin-bottom: 0.5rem;
+      }
+
+      .intro {
+        font-size: 1.6rem;
+        font-weight: 400;
+        color: #64ffda;
+        margin-top: 0.2rem;
+      }
+
+      .objective {
+        max-width: 600px;
+        margin: 1.2rem 0 2.2rem;
+        font-size: 1.2rem;
+        background: rgba(30, 58, 95, 0.5);
+        backdrop-filter: blur(8px);
+        padding: 1.2rem 2rem;
+        border-radius: 80px;
+        color: #e6f1ff;
+        border: 1px solid #1e3a5f;
+      }
+
+      .btn {
+        display: inline-block;
+        background: transparent;
+        color: #64ffda;
+        font-weight: 600;
+        padding: 0.9rem 2.8rem;
+        border-radius: 60px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        transition: 0.2s;
+        border: 2px solid #64ffda;
+      }
+
+      .btn:hover {
+        background: #64ffda;
+        color: #0a192f;
+        transform: translateY(-4px);
+        box-shadow: 0 15px 25px -10px #64ffda80;
+      }
+
+      /* Photo container - right aligned */
+      .home-photo {
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-left: auto;
+      }
+
+      /* Photo frame - MEDIUM SIZE 200px (increased from 140px) */
+      .photo-frame {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, #1e3a5f, #0a192f);
+        border: 4px solid #64ffda;
+        box-shadow: 0 20px 30px -10px rgba(100, 255, 218, 0.3);
+        overflow: hidden;
+      }
+
+      /* Profile image styling */
+      .photo-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 50%;
+        display: block;
+      }
+
+      /* Optional hover effect */
+      .photo-frame:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+        box-shadow: 0 25px 35px -8px #64ffda;
+      }
+
+      /* ----- skills (core abilities) ----- */
+      #skills h2 {
+        font-size: 2.6rem;
+        margin-bottom: 2.5rem;
+        color: #ccd6f6;
+        position: relative;
+        display: inline-block;
+      }
+      #skills h2:after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 20%;
+        width: 60%;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, #64ffda, transparent);
+        border-radius: 4px;
+      }
+
+      .skills-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3rem;
+        justify-content: center;
+        margin-top: 3rem;
+      }
+
+      .skill-category {
+        flex: 1 1 300px;
+        background: #112240;
+        border-radius: 40px;
+        padding: 2rem 2rem 2.5rem;
+        box-shadow: 0 25px 45px -18px #020c1b;
+        border: 1px solid #1e3a5f;
+      }
+
+      .skill-category h3 {
+        font-size: 1.8rem;
+        color: #64ffda;
+        margin-bottom: 2rem;
+        font-weight: 600;
+        border-left: 6px solid #64ffda;
+        padding-left: 1rem;
+      }
+
+      .skill {
+        margin: 1.5rem 0;
+      }
+
+      .skill span {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+        color: #a8b2d1;
+      }
+      .skill span i {
+        color: #64ffda;
+        width: 24px;
+        font-size: 1.3rem;
+      }
+
+      .progress {
+        background: #233554;
+        border-radius: 30px;
+        height: 14px;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 14px;
+        border-radius: 30px;
+        background: linear-gradient(90deg, #64ffda, #4abf9a);
+        width: 0%;
+        box-shadow: 0 0 6px #64ffda;
+      }
+
+      /* ----- projects (ONLY Hotel Management System + SIH AI Chatbot) ----- */
+      #projects h2 {
+        font-size: 2.6rem;
+        margin-bottom: 1rem;
+        color: #ccd6f6;
+      }
+
+      .project-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: center;
+        margin: 3rem 0;
+      }
+
+      .card {
+        background: #112240;
+        width: 300px;
+        border-radius: 2.5rem;
+        padding: 2rem 1.8rem 2.2rem;
+        box-shadow: 0 30px 40px -20px #020c1b;
+        transition: all 0.25s ease;
+        border: 1px solid #1e3a5f;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 40px 50px -18px #64ffda30;
+        border-color: #64ffda;
+      }
+
+      .card .icon-bg {
+        width: 90px;
+        height: 90px;
+        background: #1e3a5f;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 2.8rem;
+        color: #64ffda;
+      }
+
+      .card h3 {
+        font-size: 1.8rem;
+        margin-bottom: 0.8rem;
+        color: #ccd6f6;
+      }
+
+      .card p {
+        color: #a8b2d1;
+        font-size: 1.05rem;
+        line-height: 1.5;
+      }
+
+      /* ----- achievements (including Infosys Springboard HTML certification) ----- */
+      #achievements {
+        background: rgba(17, 34, 64, 0.6);
+        backdrop-filter: blur(6px);
+        border-radius: 5rem 5rem 2rem 2rem;
+        margin: 2rem 0;
+      }
+      #achievements h2 {
+        font-size: 2.6rem;
+        color: #ccd6f6;
+        margin-bottom: 2.5rem;
+        position: relative;
+        display: inline-block;
+      }
+      #achievements h2:after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 20%;
+        width: 60%;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, #64ffda, transparent);
+        border-radius: 4px;
+      }
+
+      .achievement-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2.5rem;
+        justify-content: center;
+        margin-top: 2rem;
+      }
+
+      .achievement-card {
+        background: #112240;
+        max-width: 340px;
+        flex: 1 1 280px;
+        border-radius: 3rem;
+        padding: 2.5rem 2rem;
+        box-shadow: 0 30px 35px -18px #020c1b;
+        border: 1px solid #1e3a5f;
+        transition: 0.2s;
+        text-align: center;
+      }
+
+      .achievement-card:hover {
+        transform: translateY(-8px);
+        border-color: #64ffda;
+      }
+
+      .achievement-icon {
+        font-size: 3rem;
+        margin-bottom: 1.2rem;
+        color: #64ffda;
+      }
+
+      .achievement-card h3 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #ccd6f6;
+        margin-bottom: 0.5rem;
+      }
+
+      .achievement-card p {
+        font-size: 1.1rem;
+        color: #a8b2d1;
+        line-height: 1.5;
+      }
+
+      /* ----- contact (no phone) ----- */
+      #contact {
+        background: rgba(17, 34, 64, 0.4);
+        backdrop-filter: blur(8px);
+        border-radius: 6rem 6rem 2rem 2rem;
+        margin-top: 2rem;
+      }
+
+      #contact h2 {
+        font-size: 2.6rem;
+        color: #ccd6f6;
+        margin-bottom: 2rem;
+      }
+
+      .contact-form {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #112240;
+        padding: 2.8rem 2.8rem 2.8rem;
+        border-radius: 4rem;
+        box-shadow: 0 30px 40px -20px #020c1b;
+        border: 1px solid #1e3a5f;
+      }
+
+      .input-group {
+        margin-bottom: 1.8rem;
+        text-align: left;
+      }
+
+      .input-group label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 0.4rem;
+        color: #a8b2d1;
+        font-size: 1rem;
+      }
+
+      .input-group input,
+      .input-group textarea {
+        width: 100%;
+        padding: 1rem 1.5rem;
+        border: none;
+        background: #233554;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-family: "Inter", sans-serif;
+        color: #e6f1ff;
+        border: 1px solid #1e3a5f;
+        transition: 0.2s;
+      }
+
+      .input-group input:focus,
+      .input-group textarea:focus {
+        outline: none;
+        border-color: #64ffda;
+        box-shadow: 0 0 0 4px #64ffda20;
+      }
+
+      textarea {
+        min-height: 130px;
+        resize: vertical;
+        border-radius: 30px !important;
+      }
+
+      .submit-btn {
+        background: transparent;
+        color: #64ffda;
+        border: 2px solid #64ffda;
+        padding: 1rem 2.2rem;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+        width: 100%;
+      }
+
+      .submit-btn:hover {
+        background: #64ffda;
+        color: #0a192f;
+        transform: scale(1.02);
+      }
+
+      .social-links {
+        margin-top: 2.5rem;
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+      }
+
+      .social-links a {
+        color: #64ffda;
+        background: #1e3a5f;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        text-decoration: none;
+        transition: 0.2s;
+        border: 1px solid #1e3a5f;
+      }
+
+      .social-links a:hover {
+        background: #64ffda;
+        color: #0a192f;
+        transform: translateY(-6px);
+      }
+
+      /* ---------- CHATBOT INTEGRATION (fixed bottom-right) ---------- */
+      .chatbot-toggle {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: #64ffda;
+        border: none;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.2rem;
+        color: #0a192f;
+        transition: 0.2s;
+        z-index: 1000;
+      }
+
+      .chatbot-toggle:hover {
+        transform: scale(1.1);
+        background: #4abf9a;
+      }
+
+      .chatbot-container {
+        position: fixed;
+        bottom: 6rem;
+        right: 2rem;
+        width: 360px;
+        max-width: 90vw;
+        background: #112240;
+        border-radius: 2rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        border: 1px solid #1e3a5f;
+        overflow: hidden;
+        display: none;
+        flex-direction: column;
+        z-index: 1001;
+        backdrop-filter: blur(10px);
+      }
+
+      .chatbot-header {
+        background: #1e3a5f;
+        padding: 1.2rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #64ffda;
+        font-weight: 600;
+        font-size: 1.2rem;
+      }
+
+      .chatbot-header button {
+        background: none;
+        border: none;
+        color: #a8b2d1;
+        font-size: 1.6rem;
+        cursor: pointer;
+      }
+      .chatbot-header button:hover {
+        color: #64ffda;
+      }
+
+      .chatbot-messages {
+        height: 280px;
+        overflow-y: auto;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        background: #0a192f;
+      }
+
+      .message {
+        padding: 0.8rem 1.2rem;
+        border-radius: 24px;
+        max-width: 80%;
+        word-wrap: break-word;
+      }
+
+      .user-message {
+        background: #64ffda;
+        color: #0a192f;
+        align-self: flex-end;
+        border-bottom-right-radius: 4px;
+      }
+
+      .bot-message {
+        background: #233554;
+        color: #e6f1ff;
+        align-self: flex-start;
+        border-bottom-left-radius: 4px;
+      }
+
+      .chatbot-input {
+        display: flex;
+        padding: 1rem;
+        background: #112240;
+        border-top: 1px solid #1e3a5f;
+      }
+
+      .chatbot-input input {
+        flex: 1;
+        padding: 0.9rem 1.2rem;
+        border: none;
+        background: #233554;
+        border-radius: 40px;
+        color: #e6f1ff;
+        font-size: 1rem;
+        margin-right: 0.8rem;
+        border: 1px solid #1e3a5f;
+      }
+
+      .chatbot-input input:focus {
+        outline: none;
+        border-color: #64ffda;
+      }
+
+      .chatbot-input button {
+        background: #64ffda;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 1.4rem;
+        color: #0a192f;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .chatbot-input button:hover {
+        background: #4abf9a;
+      }
+
+      /* responsive */
+      @media (max-width: 800px) {
+        nav {
+          flex-direction: column;
+          gap: 0.8rem;
+          padding: 1rem;
+        }
+        nav ul {
+          gap: 1.2rem;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        #home {
+          flex-direction: column;
+          text-align: center;
+          justify-content: center;
+        }
+        .home-content {
+          text-align: center;
+        }
+        .objective {
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .home-photo {
+          justify-content: center;
+          margin-left: 0;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .chatbot-container {
+          width: 90vw;
+          right: 5vw;
+          bottom: 7rem;
+        }
+        .photo-frame {
+          width: 160px; /* Adjusted for mobile (still medium-large) */
+          height: 160px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- navigation -->
+    <nav>
+      <div class="logo">Abinaya</div>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#achievements">Achievements</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- home - with medium sized circular photo on the right (200px) -->
+    <section id="home">
+      <!-- left side: text content -->
+      <div class="home-content">
+        <h1>Hi, I'm Abinaya</h1>
+        <p class="intro">Front-End Developer</p>
+        <p class="objective">
+          Passionate about building robust applications and solving real-world
+          problems with Java, JDBC, and modern web technologies.
+        </p>
+        <a href="#contact" class="btn">Hire Me</a>
+      </div>
+      <!-- right side: circular photo - MEDIUM SIZE 200px -->
+      <div class="home-photo">
+        <div class="photo-frame">
+          <!-- 👇 REPLACE "your-photo.jpg" WITH YOUR ACTUAL IMAGE FILE -->
+          <img src="cam.jpeg" alt="Abinaya" />
+        </div>
+      </div>
+    </section>
+
+    <!-- skills -->
+    <section id="skills" class="section">
+      <h2>Skills</h2>
+      <div class="skills-wrapper">
+        <div class="skill-category">
+          <h3>
+            <i class="fas fa-code" style="margin-right: 10px"></i>Programming
+          </h3>
+          <div class="skill">
+            <span><i class="fab fa-java"></i> Java (JDBC)</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 85%"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <span><i class="fas fa-database"></i> MySQL</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 80%"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <span><i class="fab fa-python"></i> Python</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 70%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3>
+            <i class="fas fa-globe" style="margin-right: 8px"></i>Web & Tools
+          </h3>
+          <div class="skill">
+            <span><i class="fab fa-html5"></i> HTML/CSS</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 90%"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <span><i class="fab fa-js"></i> JavaScript</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 75%"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <span><i class="fas fa-code-branch"></i> Git/GitHub</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 80%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- projects - ONLY Hotel Management + SIH AI Chatbot -->
+    <section id="projects" class="section">
+      <h2>Projects</h2>
+      <div class="project-container">
+        <!-- Hotel Management System using JDBC -->
+        <div class="card">
+          <div class="icon-bg"><i class="fas fa-hotel"></i></div>
+          <h3>Hotel Management</h3>
+          <p>
+            Java + JDBC based system for room booking, customer check-in/out,
+            and billing with MySQL.
+          </p>
+        </div>
+        <!-- AI Health Chatbot - Smart India Hackathon 2025 -->
+        <div class="card">
+          <div class="icon-bg"><i class="fas fa-robot"></i></div>
+          <h3>AI Health Chatbot</h3>
+          <p>
+            Smart India Hackathon 2025 – AI-driven public health chatbot for
+            disease awareness and rural outreach.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- achievements (including Infosys Springboard HTML certification) -->
+    <section id="achievements" class="section">
+      <h2>Achievements</h2>
+      <div class="achievement-grid">
+        <div class="achievement-card">
+          <div class="achievement-icon"><i class="fas fa-brain"></i></div>
+          <h3>Brainobrain</h3>
+          <p>
+            State level runner-up – demonstrated exceptional cognitive &
+            problem‑solving skills.
+          </p>
+        </div>
+        <div class="achievement-card">
+          <div class="achievement-icon"><i class="fas fa-flask"></i></div>
+          <h3>Science Olympiad</h3>
+          <p>
+            District level winner – secured 1st position in the district science
+            olympiad.
+          </p>
+        </div>
+        <div class="achievement-card">
+          <div class="achievement-icon"><i class="fas fa-trophy"></i></div>
+          <h3>Smart India Hackathon 2025</h3>
+          <p>
+            AI-driven public health chatbot for disease awareness – built to
+            assist rural communities.
+          </p>
+        </div>
+        <!-- Infosys Springboard HTML certification -->
+        <div class="achievement-card">
+          <div class="achievement-icon"><i class="fas fa-certificate"></i></div>
+          <h3>HTML5 Certification</h3>
+          <p>
+            Infosys Springboard – certified in modern HTML5 and web
+            fundamentals.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- contact (no phone) -->
+    <section id="contact" class="section">
+      <h2>Let's connect</h2>
+      <div class="contact-form">
+        <form>
+          <div class="input-group">
+            <label for="name">Your name</label>
+            <input type="text" id="name" placeholder="e.g., Abinaya" required />
+          </div>
+          <div class="input-group">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="abinaya@dev.com"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label for="message">Message</label>
+            <textarea
+              id="message"
+              placeholder="Tell me about your project..."
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="submit-btn">
+            <i class="fas fa-paper-plane" style="margin-right: 8px"></i>Send
+            message
+          </button>
+        </form>
+        <!-- standard github / linkedin -->
+        <div class="social-links">
+          <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- chatbot toggle & container (demo integration) -->
+    <div class="chatbot-toggle" id="chatbotToggle">
+      <i class="fas fa-comment-dots"></i>
+    </div>
+
+    <div class="chatbot-container" id="chatbotContainer">
+      <div class="chatbot-header">
+        <span>Health Assistant (demo)</span>
+        <button id="closeChatbot"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="message bot-message">
+          Hello! I'm a simple demo bot. Ask me about Abinaya's projects or the
+          SIH health chatbot.
+        </div>
+      </div>
+      <div class="chatbot-input">
+        <input type="text" id="chatInput" placeholder="Type a message..." />
+        <button id="sendChat"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+
+    <script>
+      // Simple chatbot toggle and echo (demo integration)
+      const toggle = document.getElementById("chatbotToggle");
+      const container = document.getElementById("chatbotContainer");
+      const closeBtn = document.getElementById("closeChatbot");
+      const sendBtn = document.getElementById("sendChat");
+      const chatInput = document.getElementById("chatInput");
+      const messagesDiv = document.getElementById("chatbotMessages");
+
+      toggle.addEventListener("click", () => {
+        container.style.display =
+          container.style.display === "flex" ? "none" : "flex";
+      });
+
+      closeBtn.addEventListener("click", () => {
+        container.style.display = "none";
+      });
+
+      function addMessage(text, isUser) {
+        const msgDiv = document.createElement("div");
+        msgDiv.classList.add(
+          "message",
+          isUser ? "user-message" : "bot-message"
+        );
+        msgDiv.textContent = text;
+        messagesDiv.appendChild(msgDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+
+      function handleSend() {
+        const text = chatInput.value.trim();
+        if (text === "") return;
+        addMessage(text, true);
+        chatInput.value = "";
+
+        // simple bot reply referencing SIH and hotel project
+        setTimeout(() => {
+          let reply = `You said: "${text}". I'm a simple demo bot.`;
+          if (text.toLowerCase().includes("hello"))
+            reply =
+              "Hi there! Ask me about Abinaya’s projects or the SIH health chatbot.";
+          else if (text.toLowerCase().includes("hotel"))
+            reply =
+              "Hotel Management System uses Java, JDBC, and MySQL for room booking and billing.";
+          else if (
+            text.toLowerCase().includes("hackathon") ||
+            text.toLowerCase().includes("sih") ||
+            text.toLowerCase().includes("health")
+          )
+            reply =
+              "Smart India Hackathon 2025: Abinaya worked on an AI-driven public health chatbot for disease awareness.";
+          else if (text.toLowerCase().includes("skill"))
+            reply =
+              "Skills include Java (JDBC), Python, MySQL, HTML/CSS, JavaScript and Git.";
+          addMessage(reply, false);
+        }, 500);
+      }
+
+      sendBtn.addEventListener("click", handleSend);
+      chatInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") handleSend(
